@@ -1,5 +1,6 @@
 package com.sky.service.impl;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
@@ -81,13 +82,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.ENABLE);
         //设置初始密码，并进行MD5加密
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-        //设置当前记录的创建时间和修改时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-        //设置当前记录的创建人id和修改人id
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
-
         //调用Mapper的insert方法，插入数据到数据库
         employeeMapper.insert(employee);
     }
@@ -147,10 +141,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = new Employee();
         //对象属性拷贝
         BeanUtils.copyProperties(employeeDTO, employee);
-        //设置修改时间
-        employee.setUpdateTime(LocalDateTime.now());
-        //设置修改人id
-        employee.setUpdateUser(BaseContext.getCurrentId());
         //调用Mapper的update方法，更新数据库中的数据
         employeeMapper.update(employee);
     }
@@ -162,9 +152,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public void editPassword(PasswordEditDTO passwordEditDTO) {
-        passwordEditDTO.setEmpId(BaseContext.getCurrentId());
         //查询数据库中的员工信息
-        Employee dbEmployee = employeeMapper.getById(passwordEditDTO.getEmpId());
+        Employee dbEmployee = employeeMapper.getById(BaseContext.getCurrentId());
         //对前端传来的旧密码进行MD5加密
         String oldPassword = DigestUtils.md5DigestAsHex(passwordEditDTO.getOldPassword().getBytes());
         //判断旧密码是否正确
@@ -174,8 +163,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         } else {
             //旧密码正确，设置新密码
             Employee employee = new Employee();
-            employee.setId(passwordEditDTO.getEmpId());
-            employee.setUpdateTime(LocalDateTime.now());
+            employee.setId(BaseContext.getCurrentId());
             //对前端传来的新密码进行MD5加密
             String newPassword = DigestUtils.md5DigestAsHex(passwordEditDTO.getNewPassword().getBytes());
             employee.setPassword(newPassword);
