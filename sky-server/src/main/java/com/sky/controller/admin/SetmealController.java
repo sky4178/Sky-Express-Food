@@ -1,6 +1,5 @@
 package com.sky.controller.admin;
 
-import com.sky.dto.DishDTO;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.result.PageResult;
