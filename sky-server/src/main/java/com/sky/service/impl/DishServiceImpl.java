@@ -147,5 +147,21 @@ public class DishServiceImpl implements DishService {
         }
     }
 
+    /**
+     * 更新菜品状态
+     *
+     * @param id     菜品ID
+     * @param status 菜品状态
+     */
+    @Override
+    public void updateStatus(Long id, Integer status) {
+        // 构建Dish对象
+        Dish dish = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+        // 更新菜品状态
+        dishMapper.update(dish);
+    }
 
 }

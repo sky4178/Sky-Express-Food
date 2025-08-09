@@ -140,5 +140,22 @@ public class SetmealServiceImpl implements SetmealService {
         }
     }
 
+    /**
+     * 更新套餐状态
+     *
+     * @param id     套餐ID
+     * @param status 新状态
+     */
+    @Override
+    public void updateStatus(Long id, Integer status) {
+        // 构建Setmeal对象
+        Setmeal setmeal = Setmeal.builder()
+                .id(id)
+                .status(status)
+                .build();
+        // 执行更新操作
+        setmealMapper.update(setmeal);
+    }
+
 
 }
