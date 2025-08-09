@@ -9,6 +9,8 @@ import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface SetmealMapper {
     /**
@@ -35,4 +37,20 @@ public interface SetmealMapper {
      * @return 分页结果
      */
     Page<SetmealVO> pageQuery(SetmealPageQueryDTO setmealPageQueryDTO);
+
+    /**
+     * 根据ID查询套餐信息
+     *
+     * @param id
+     * @return
+     */
+    @Select("SELECT * FROM setmeal WHERE id = #{id}")
+    Setmeal getById(Long id);
+
+    /**
+     * 根据ID批量删除套餐
+     *
+     * @param ids 套餐ID列表
+     */
+    void deleteBatch(List<Long> ids);
 }
