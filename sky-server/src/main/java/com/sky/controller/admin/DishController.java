@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * 菜品管理
  */
-@RestController
+@RestController("adminDishController")
 @Slf4j
 @RequestMapping("/admin/dish")
 @Api(tags = "菜品管理")

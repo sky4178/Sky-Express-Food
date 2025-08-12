@@ -61,4 +61,12 @@ public interface SetmealMapper {
      */
     @AutoFill(OperationType.UPDATE)
     void update(Setmeal setmeal);
+
+    /**
+     * 根据条件查询套餐列表
+     *
+     * @param setmeal 查询条件
+     * @return 套餐列表
+     */
+    List<Setmeal> list(Setmeal setmeal);
 }

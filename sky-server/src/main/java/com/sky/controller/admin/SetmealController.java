@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * 套餐管理
  */
-@RestController
+@RestController("adminSetmealController")
 @Slf4j
 @RequestMapping("/admin/setmeal")
 @Api(tags = "套餐管理")
