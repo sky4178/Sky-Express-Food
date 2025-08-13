@@ -166,6 +166,9 @@ public class DishServiceImpl implements DishService {
                 .status(status)
                 .build();
 
+        // 更新菜品状态
+        dishMapper.update(dish);
+
         if (status == StatusConstant.DISABLE) {
             // 如果是停售操作，还需要将包含当前菜品的套餐也停售
             List<Long> dishIds = new ArrayList<>();
