@@ -10,6 +10,7 @@ import com.sky.mapper.SetmealMapper;
 import com.sky.mapper.ShoppingCartMapper;
 import com.sky.service.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -91,5 +92,29 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Long userId = BaseContext.getCurrentId();
         // 清空当前用户的购物车
         shoppingCartMapper.clearByUserId(userId);
+    }
+
+    /**
+     * 移除购物车中的商品
+     *
+     * @param shoppingCartDTO 购物车数据传输对象
+     */
+    @Override
+    public void subShoppingCart(ShoppingCartDTO shoppingCartDTO) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        // 如果购物车中存在该商品
+        if (list != null && !list.isEmpty()) {
+            shoppingCart = list.get(0);
+            // 如果数量大于1，则减少数量
+            if (shoppingCart.getNumber() > 1) {
+                shoppingCart.setNumber(shoppingCart.getNumber() - 1);
+                shoppingCartMapper.updateNumberById(shoppingCart);
+            } else {
+                // 如果数量为1，则删除该商品
+                shoppingCartMapper.deleteById(shoppingCart.getId());
+            }
+        }
     }
 }
