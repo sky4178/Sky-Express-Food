@@ -27,6 +27,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     private SetmealMapper setmealMapper;
 
+    /**
+     * 添加购物车
+     *
+     * @param shoppingCartDTO 购物车数据传输对象
+     */
     @Override
     public void addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
         // 判断当前加入购物车的商品是否存在
@@ -61,5 +66,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             // 插入新的购物车记录
             shoppingCartMapper.insert(shoppingCart);
         }
+    }
+
+    /**
+     * 查看购物车
+     *
+     * @return 购物车列表
+     */
+    @Override
+    public List<ShoppingCart> showShoppingCart() {
+        ShoppingCart shoppingCart = ShoppingCart.builder()
+                .userId(BaseContext.getCurrentId())
+                .build();
+        // 查询当前用户的购物车列表
+        return shoppingCartMapper.list(shoppingCart);
     }
 }
