@@ -37,7 +37,7 @@ public class ShoppingCartController {
 
 
     /**
-     * 清空购物车
+     * 查看购物车
      *
      * @return Result
      */
@@ -47,5 +47,18 @@ public class ShoppingCartController {
         log.info("查看购物车");
         List<ShoppingCart> list = shoppingCartService.showShoppingCart();
         return Result.success(list);
+    }
+
+    /**
+     * 清空购物车
+     *
+     * @return Result
+     */
+    @DeleteMapping("/clean")
+    @ApiOperation("清空购物车")
+    public Result clear() {
+        log.info("清空购物车");
+        shoppingCartService.clearShoppingCart();
+        return Result.success();
     }
 }
