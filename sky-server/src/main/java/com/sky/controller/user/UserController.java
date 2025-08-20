@@ -31,8 +31,7 @@ public class UserController {
     /**
      * 微信登录
      *
-     * @param userLoginDTO
-     * @return
+     * @param userLoginDTO 登录信息
      */
     @PostMapping("/login")
     @ApiOperation("微信登录")
@@ -51,5 +50,16 @@ public class UserController {
                 .token(token)
                 .build();
         return Result.success(userLoginVO);
+    }
+
+    /**
+     * 退出
+     *
+     * @return 退出成功
+     */
+    @PostMapping("/logout")
+    @ApiOperation("退出")
+    public Result logout() {
+        return Result.success();
     }
 }
