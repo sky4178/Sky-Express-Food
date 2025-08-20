@@ -407,6 +407,27 @@ public class OrderServiceImpl implements OrderService {
     }
 
     /**
+     * 催单
+     *
+     * @param id 订单ID
+     */
+    @Override
+    public void reminder(Long id) {
+        // 根据订单ID查询订单
+        Orders orders = orderMapper.getById(id);
+        if (orders == null) {
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+        // 发送消息给前端，通知订单状态变更 type orderId content
+        Map map = new HashMap();
+        map.put("type", 2); // 1表示来单提醒 2表示客户催单
+        map.put("orderId", id);
+        map.put("content", "订单号" + orders.getNumber());
+        String jsonString = JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(jsonString);
+    }
+
+    /**
      * 获取订单VO列表
      *
      * @param orders 分页查询结果
