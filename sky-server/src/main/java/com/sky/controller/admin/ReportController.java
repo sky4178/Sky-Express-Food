@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
 @RestController
@@ -92,7 +93,17 @@ public class ReportController {
             @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate end
     ) {
         log.info("查询销量排名top10");
-        SalesTop10ReportVO salesTop10ReportVO = reportService.getTop10(begin,end);
+        SalesTop10ReportVO salesTop10ReportVO = reportService.getTop10(begin, end);
         return Result.success(salesTop10ReportVO);
+    }
+
+    /**
+     * 导出Excel报表接口
+     * 该接口用于导出营业额、用户、订单等统计数据到Excel文件
+     */
+    @GetMapping("/export")
+    @ApiOperation("导出Excel报表接口")
+    public void export(HttpServletResponse response) {
+        reportService.exportBusinessData(response);
     }
 }

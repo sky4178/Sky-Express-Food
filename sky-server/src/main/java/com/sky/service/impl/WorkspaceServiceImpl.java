@@ -14,6 +14,7 @@ import com.sky.vo.SetmealOverViewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashMap;
@@ -37,12 +38,12 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      * @return 今日运营数据
      */
     @Override
-    public BusinessDataVO getBusinessData() {
-        Map<String, Object> map = getLocalDateTimeMap();
+    public BusinessDataVO getBusinessData(LocalDateTime beginTime, LocalDateTime endTime) {
+        Map<String, Object> map = getLocalDateTimeMap(beginTime, endTime);
         // 查询订单总数
         Integer totalOrderCount = orderMapper.countByMap(map);
         // 查询完成订单数
-        map.put("status", "COMPLETED");
+        map.put("status", Orders.COMPLETED);
         Integer validOrderCount = orderMapper.countByMap(map);
         // 查询营业额
         Double turnover = orderMapper.sumByMap(map);
@@ -141,17 +142,27 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     }
 
     /**
+     * 获取指定开始和结束时间的Map
+     *
+     * @param beginTime 开始时间
+     * @param endTime   结束时间
+     * @return 包含开始和结束时间的Map
+     */
+    private static Map<String, Object> getLocalDateTimeMap(LocalDateTime beginTime, LocalDateTime endTime) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("beginTime", beginTime);
+        map.put("endTime", endTime);
+        return map;
+    }
+
+    /**
      * 获取当前日期的开始和结束时间
      *
      * @return 包含开始和结束时间的Map
      */
     private static Map<String, Object> getLocalDateTimeMap() {
-        LocalDateTime beginTime = LocalDateTime.now().with(LocalTime.MIN);
-        LocalDateTime endTime = LocalDateTime.now().with(LocalTime.MAX);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("beginTime", beginTime);
-        map.put("endTime", endTime);
-        return map;
+        LocalDateTime begin = LocalDate.now().atStartOfDay();
+        LocalDateTime end = LocalDate.now().atTime(LocalTime.MAX);
+        return getLocalDateTimeMap(begin, end);
     }
 }
