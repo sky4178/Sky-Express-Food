@@ -43,10 +43,11 @@ sky-take-out/
    - Redis
 
 2. **数据库初始化**
-   - 创建数据库并导入表结构和初始数据（SQL 脚本请参考项目文档或 resources 目录）。
+   - 创建数据库并导入表结构和初始数据（SQL 脚本请参考项目文档或 resources/template 目录）。
 
 3. **配置修改**
    - 修改 `sky-server/src/main/resources/application.yml` 和 `application-dev.yml`，配置数据库和 Redis 连接信息。
+   - 可参考文末的“开发环境配置模板”进行 application-dev.yml 配置。
 
 4. **编译与运行**
    ```bash
@@ -65,3 +66,34 @@ sky-take-out/
 - 报表模板等资源位于 `sky-server/src/main/resources/template/`。
 - 日志、环境等配置可在 `application.yml` 中调整。
 
+---
+
+## 开发环境配置模板（application-dev.yml 示例）
+
+```yaml
+sky:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: <your-mysql-host>
+    port: 3306
+    database: <your-database-name>
+    username: <your-db-username>
+    password: <your-db-password>
+  alioss:
+    endpoint: <your-oss-endpoint>
+    access-key-id: <your-oss-access-key-id>
+    access-key-secret: <your-oss-access-key-secret>
+    bucket-name: <your-oss-bucket-name>
+  redis:
+    host: <your-redis-host>
+    port: 6379
+    password: <your-redis-password>
+    database: 2
+  wechat:
+    appid: <your-wechat-appid>
+    secret: <your-wechat-secret>
+  shop:
+    address: <your-shop-address>
+  baidu:
+    ak: <your-baidu-ak>
+```
